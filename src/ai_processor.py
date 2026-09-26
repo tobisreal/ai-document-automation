@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -7,61 +7,89 @@ from openai import OpenAI
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
-
 
 def process_document(document_text):
-    """
-    Extract structured business information
-    from an unstructured document using an LLM.
-    """
+    """Extract standardized business data using an LLM."""
 
-    prompt = f"""
-You are a business document processing system.
+    api_key = os.getenv("OPENAI_API_KEY")
 
-Analyze the document below.
+    if not api_key:
+        raise ValueError(
+            "OPENAI_API_KEY is required when PROCESSOR_MODE=ai"
+        )
 
-First determine whether the document is:
-- invoice
-- purchase_order
-- unknown
+    client = OpenAI(api_key=api_key)
 
-Then extract the information into the following JSON structure:
-
-{{
-    "document_type": "invoice or purchase_order or unknown",
-    "vendor": "vendor or supplier name",
-    "document_number": "invoice number or purchase order number",
-    "document_date": "invoice date or order date",
-    "due_date": "payment due date or expected delivery date",
-    "amount": 0.00,
-    "purchase_order": "purchase order reference if available",
-    "department": "department if available",
-    "requested_by": "requester if available"
-}}
-
-Rules:
-
-1. Return ONLY valid JSON.
-2. Do not include markdown.
-3. Do not invent missing information.
-4. Use null when information is unavailable.
-5. Amount must be a number, not a string.
-6. For invoices, document_number means the invoice number.
-7. For purchase orders, document_number means the purchase order number.
-
-DOCUMENT:
-
-{document_text}
-"""
+    schema = {
+        "type": "object",
+        "properties": {
+            "document_type": {
+                "type": "string",
+                "enum": [
+                    "invoice",
+                    "purchase_order",
+                    "unknown"
+                ]
+            },
+            "vendor": {
+                "type": ["string", "null"]
+            },
+            "document_number": {
+                "type": ["string", "null"]
+            },
+            "document_date": {
+                "type": ["string", "null"]
+            },
+            "due_date": {
+                "type": ["string", "null"]
+            },
+            "amount": {
+                "type": ["number", "null"]
+            },
+            "purchase_order": {
+                "type": ["string", "null"]
+            },
+            "department": {
+                "type": ["string", "null"]
+            },
+            "requested_by": {
+                "type": ["string", "null"]
+            }
+        },
+        "required": [
+            "document_type",
+            "vendor",
+            "document_number",
+            "document_date",
+            "due_date",
+            "amount",
+            "purchase_order",
+            "department",
+            "requested_by"
+        ],
+        "additionalProperties": False
+    }
 
     response = client.responses.create(
         model="gpt-5.6-luna",
-        input=prompt
+
+        instructions=(
+            "You are a business document processing system. "
+            "Classify the document and extract its business data. "
+            "Do not invent missing information. "
+            "Use null when information is unavailable."
+        ),
+
+        input=document_text,
+
+        text={
+            "format": {
+                "type": "json_schema",
+                "name": "business_document",
+                "strict": True,
+                "schema": schema
+            }
+        }
     )
 
-    result = response.output_text
-
-    return json.loads(result)
+    return json.loads(response.output_text)

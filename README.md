@@ -139,6 +139,76 @@ ai-document-automation/
 - Git
 - GitHub
 
+## Processing Modes
+
+The application supports two document-processing engines.
+
+### Rule-Based Mode
+
+Rule-based processing is the default mode and does not require an external API.
+
+Configure:
+
+```text
+PROCESSOR_MODE=rules
+```
+
+The rule processor uses regular expressions and predefined extraction logic.
+
+This approach works well for predictable document formats but may struggle when suppliers use different layouts or field names.
+
+### AI Mode
+
+The optional AI processor uses an LLM to classify documents and extract structured business information.
+
+Configure:
+
+```text
+PROCESSOR_MODE=ai
+OPENAI_API_KEY=your_api_key_here
+```
+
+The AI processor uses schema-constrained structured output so extracted documents follow the same standardized data model used by the rest of the application.
+
+API credentials are loaded from environment variables and are never committed to the repository.
+
+## Extraction Architecture
+
+```text
+                    main.py
+                       |
+                       v
+                  processor.py
+                       |
+              +--------+--------+
+              |                 |
+              v                 v
+      Rule-Based Mode        AI Mode
+              |                 |
+              v                 v
+     rule_processor.py    ai_processor.py
+              |                 |
+              +--------+--------+
+                       |
+                       v
+               Standardized Data
+                       |
+                       v
+                   Validation
+                       |
+                +------+------+
+                |             |
+                v             v
+            APPROVED    REVIEW_REQUIRED
+                |             |
+                +------+------+
+                       |
+                       v
+                SQLite + CSV
+```
+
+The separation between the processing engines allows the extraction strategy to change without modifying the validation, storage, or reporting components.
+
 ## Installation
 
 Clone the repository:
