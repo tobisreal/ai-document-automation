@@ -1,0 +1,2 @@
+document_type,vendor,invoice_number,invoice_date,due_date,amount,purchase_order,department,source_file,status
+invoice,Manitoba Technology Supplies Inc.,MTS-2026-104,"September 22, 2026","October 22, 2026",3200.0,PO-9201,Information Technology,invoice_003.pdf,APPROVED

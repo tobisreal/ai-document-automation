@@ -1,0 +1,16 @@
+Northern Equipment Services
+Invoice #NES-4432
+
+Date: September 18, 2026
+
+Customer:
+ABC Manufacturing Ltd.
+
+Service:
+Preventive maintenance - production equipment
+
+Amount: $1,850.00
+GST: $92.50
+Total Due: $1,942.50
+
+Payment Due: October 18, 2026

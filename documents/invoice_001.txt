@@ -1,0 +1,16 @@
+INVOICE
+
+Invoice Number: INV-2026-001
+Vendor: Prairie Industrial Supplies Ltd.
+Invoice Date: September 15, 2026
+Due Date: October 15, 2026
+
+Description:
+Replacement equipment parts
+
+Subtotal: $2,300.00
+Tax: $115.00
+Total: $2,415.00
+
+Purchase Order: PO-8831
+Department: Operations
