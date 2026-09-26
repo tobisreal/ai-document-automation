@@ -1,5 +1,5 @@
 from extractor import read_document
-from ai_processor import process_document
+from processor import process_document
 from database import create_database, save_document, document_exists
 from validator import validate_document
 from pathlib import Path

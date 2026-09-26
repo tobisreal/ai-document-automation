@@ -1,2 +1,5 @@
-document_type,vendor,invoice_number,invoice_date,due_date,amount,purchase_order,department,source_file,status
-invoice,Manitoba Technology Supplies Inc.,MTS-2026-104,"September 22, 2026","October 22, 2026",3200.0,PO-9201,Information Technology,invoice_003.pdf,APPROVED
+document_type,vendor,document_number,document_date,due_date,amount,purchase_order,department,requested_by,source_file,status
+purchase_order,,,,,2300.0,,Operations,,invoice_001.txt,REVIEW_REQUIRED
+invoice,,,,,,,,,invoice_002.txt,REVIEW_REQUIRED
+purchase_order,,,,,3200.0,,Information Technology,,invoice_003.pdf,REVIEW_REQUIRED
+purchase_order,Winnipeg Technology Solutions,PO-2026-1001,"September 24, 2026","October 5, 2026",4500.0,PO-2026-1001,Information Technology,Operations Manager,purchase_order_001.txt,APPROVED
