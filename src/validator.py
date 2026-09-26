@@ -1,17 +1,26 @@
 def validate_document(data):
-    """
-    Validate extracted document information.
+    """Validate fields according to document type."""
 
-    Returns APPROVED when all required fields exist.
-    Otherwise returns REVIEW_REQUIRED.
-    """
+    document_type = data.get("document_type")
 
-    required_fields = [
-        "vendor",
-        "invoice_number",
-        "invoice_date",
-        "amount"
-    ]
+    if document_type == "invoice":
+        required_fields = [
+            "vendor",
+            "invoice_number",
+            "invoice_date",
+            "amount"
+        ]
+
+    elif document_type == "purchase_order":
+        required_fields = [
+            "vendor",
+            "purchase_order",
+            "invoice_date",
+            "amount"
+        ]
+
+    else:
+        return "REVIEW_REQUIRED", ["document_type"]
 
     missing_fields = []
 

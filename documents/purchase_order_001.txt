@@ -1,0 +1,18 @@
+PURCHASE ORDER
+
+Purchase Order Number: PO-2026-1001
+Supplier: Winnipeg Technology Solutions
+Order Date: September 24, 2026
+Expected Delivery: October 5, 2026
+
+Department: Information Technology
+
+Description:
+10 Dell Business Monitors
+5 Wireless Keyboard and Mouse Sets
+
+Subtotal: $4,500.00
+Tax: $225.00
+Total: $4,725.00
+
+Requested By: Operations Manager
