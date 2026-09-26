@@ -69,14 +69,15 @@ def process_invoice(document_text):
         total = float(total.replace(",", ""))
 
     return {
-        "document_type": "invoice",
-        "vendor": vendor,
-        "invoice_number": invoice_number,
-        "invoice_date": invoice_date,
-        "due_date": due_date,
-        "amount": total,
-        "purchase_order": purchase_order,
-        "department": department
+    "document_type": "invoice",
+    "vendor": vendor,
+    "document_number": invoice_number,
+    "document_date": invoice_date,
+    "due_date": due_date,
+    "amount": total,
+    "purchase_order": purchase_order,
+    "department": department,
+    "requested_by": None
     }
 
 
@@ -122,15 +123,15 @@ def process_purchase_order(document_text):
         total = float(total.replace(",", ""))
 
     return {
-        "document_type": "purchase_order",
-        "vendor": supplier,
-        "invoice_number": None,
-        "invoice_date": order_date,
-        "due_date": expected_delivery,
-        "amount": total,
-        "purchase_order": purchase_order,
-        "department": department,
-        "requested_by": requested_by
+    "document_type": "purchase_order",
+    "vendor": supplier,
+    "document_number": purchase_order,
+    "document_date": order_date,
+    "due_date": expected_delivery,
+    "amount": total,
+    "purchase_order": purchase_order,
+    "department": department,
+    "requested_by": requested_by
     }
 
 

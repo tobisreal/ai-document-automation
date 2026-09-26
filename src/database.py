@@ -6,22 +6,34 @@ DATABASE_PATH = Path("output/documents.db")
 
 
 def create_database():
+    """Create the document database."""
+
+    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS documents (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            document_type TEXT,
+
+            document_type TEXT NOT NULL,
             vendor TEXT,
-            invoice_number TEXT,
-            invoice_date TEXT,
+
+            document_number TEXT,
+            document_date TEXT,
             due_date TEXT,
+
             amount REAL,
+
             purchase_order TEXT,
             department TEXT,
-            source_file TEXT UNIQUE,
-            status TEXT,
+            requested_by TEXT,
+
+            source_file TEXT UNIQUE NOT NULL,
+
+            status TEXT NOT NULL,
+
             processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     """)
@@ -31,7 +43,7 @@ def create_database():
 
 
 def document_exists(source_file):
-    """Check whether a file has already been processed."""
+    """Check whether a source file has already been processed."""
 
     connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
@@ -49,6 +61,8 @@ def document_exists(source_file):
 
 
 def save_document(data):
+    """Save processed document information."""
+
     connection = sqlite3.connect(DATABASE_PATH)
     cursor = connection.cursor()
 
@@ -56,25 +70,27 @@ def save_document(data):
         INSERT INTO documents (
             document_type,
             vendor,
-            invoice_number,
-            invoice_date,
+            document_number,
+            document_date,
             due_date,
             amount,
             purchase_order,
             department,
+            requested_by,
             source_file,
             status
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         data.get("document_type"),
         data.get("vendor"),
-        data.get("invoice_number"),
-        data.get("invoice_date"),
+        data.get("document_number"),
+        data.get("document_date"),
         data.get("due_date"),
         data.get("amount"),
         data.get("purchase_order"),
         data.get("department"),
+        data.get("requested_by"),
         data.get("source_file"),
         data.get("status")
     ))
